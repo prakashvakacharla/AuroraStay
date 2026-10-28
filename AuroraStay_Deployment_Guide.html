@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AuroraStay deployment and prerequisites</title><style>body{font:16px/1.6 system-ui,sans-serif;color:#172c45;background:#f4f7fa;margin:0}main{max-width:1000px;margin:32px auto;background:white;padding:40px;border:1px solid #d6dee8;border-radius:12px}h1,h2,h3{line-height:1.25}h2{margin-top:36px}a{color:#155c98}pre{background:#edf2f7;padding:18px;overflow:auto;border-radius:6px}code{font-size:14px}table{border-collapse:collapse;width:100%}th,td{padding:12px;border:1px solid #d6dee8;text-align:left}blockquote{border-left:4px solid #155c98;margin-left:0;padding-left:18px}.status{background:#edf2f7;padding:20px;border-radius:8px}@media(max-width:700px){main{margin:12px;padding:20px}table{display:block;overflow:auto}}</style></head><body><main><div class="status"><strong>Prepared and locally checked; your GitHub/Codespaces and staff sign-off steps remain.</strong><p>No account credentials are included. You selected the manual deployment route.</p></div><h1>AuroraStay: browser-based Codespaces deployment</h1>
+<p>The notebook benchmark and local API checks are complete. This guide completes
+the remaining account-dependent deployment steps. The deployment package is prepared;
+a GitHub repository, Codespace and external URL have not been created for you.</p>
+<h2>Prerequisites you handle</h2>
+<ol>
+<li>A GitHub personal account with permission to create a private repository and use
+Codespaces. Check your included Codespaces usage and budget before starting;
+payment details may be needed if your included usage is exhausted.</li>
+<li>The funded OpenAI API key already used for this project, with access to
+<code>gpt-4o-mini</code> and <code>gpt-4o</code>. Keep it in Codespaces secrets, not a source file.</li>
+<li>Download <strong>AuroraStay_Codespaces_Deployment.zip</strong> from the delivered artifacts.
+It includes the trusted index, source, Compose configuration, dev container,
+startup/check scripts, and the staff-review workflow. It contains no API key.</li>
+<li>For broader live validation, a hotel policy owner or knowledgeable staff reviewer
+must review the supplied worksheet. That approval cannot be replaced by an AI score.</li>
+</ol>
+<p>You do not need Docker Desktop, GitHub CLI, or a personal access token on your Mac
+for this browser route. The supplied dev container installs Docker inside Codespaces.</p>
+<h2>1. Create a private repository</h2>
+<p>Open <a href="https://github.com/new">GitHub new repository</a>. Name it <code>aurora-stay-qna</code>
+(or another name you prefer), choose <strong>Private</strong>, select <strong>Add a README</strong>, and
+create it. Use a new repository so these instructions do not overwrite existing work.</p>
+<h2>2. Add Codespaces secrets</h2>
+<p>Open <a href="https://github.com/settings/codespaces">your Codespaces settings</a>.
+Under <strong>Codespaces secrets</strong>, choose <strong>New secret</strong> and create:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OPENAI_API_KEY</code></td>
+<td>Your funded API key</td>
+</tr>
+<tr>
+<td><code>OPENAI_API_BASE</code></td>
+<td><code>https://api.openai.com/v1</code></td>
+</tr>
+</tbody>
+</table>
+<p>For each secret, grant <strong>Repository access</strong> to the private repository from step 1.
+These must be <strong>Codespaces secrets</strong>; GitHub Actions secrets are a different store.
+Do not paste the API key into this chat, a commit, the README, or a terminal command.</p>
+<p>If you add/change secrets after starting a Codespace, stop and restart it so the
+environment receives them. <a href="https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces">GitHub secret instructions</a></p>
+<h2>3. Create the Codespace</h2>
+<p>In your repository, choose <strong>Code → Codespaces → Create codespace</strong>. Use advanced
+options to select a <strong>4-core / 8 GB</strong> machine when available; this is recommended
+for dependency/image builds. Check which account pays before confirming.
+Wait for the browser editor to open.
+<a href="https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository">GitHub creation instructions</a></p>
+<h2>4. Upload and extract the prepared package</h2>
+<p>Drag <code>AuroraStay_Codespaces_Deployment.zip</code> into the Codespaces Explorer area,
+or use its Upload action. Open a terminal at the repository root and run:</p>
+<pre><code class="language-bash">unzip -n AuroraStay_Codespaces_Deployment.zip
+</code></pre>
+<p>The ZIP stores files at its root. You should see <code>compose.yaml</code>, <code>backend_files/</code>,
+<code>frontend_files/</code>, <code>scripts/</code>, and the hidden <code>.devcontainer/</code> directory. Do not
+upload your full local workspace, <code>.venv</code>, <code>.cache</code>, <code>.openai-test.json</code>, or <code>config.json</code>.</p>
+<p>Save the deployment files to the repository:</p>
+<pre><code class="language-bash">git add .devcontainer backend_files frontend_files scripts validation compose.yaml DEPLOYMENT_GUIDE.md LIVE_VALIDATION.md .gitignore
+git add -f backend_files/faiss_index/index.faiss backend_files/faiss_index/index.pkl
+git commit -m &quot;Add AuroraStay deployment and validation workflow&quot;
+git push
+</code></pre>
+<p>The prepared ZIP includes approved development references used only for judging.
+The raw PDF collection, held-out test references, local credentials, staff names,
+and pending review worksheet are not required for deployment and are not uploaded
+by these commands. The reference catalog and index include policy information;
+keep the repository private.</p>
+<h2>5. Rebuild the development container</h2>
+<p>Open the Command Palette (<strong>Cmd/Ctrl + Shift + P</strong>) and run
+<strong>Codespaces: Rebuild Container</strong>. This applies <code>.devcontainer/devcontainer.json</code>,
+including Docker-in-Docker and forwarding for ports 7860 and 8501.
+Wait until the rebuilt editor is ready. It may download substantial dependencies
+the first time. If GitHub indicates the current machine is too small, change to
+the recommended machine type before rebuilding.</p>
+<h2>6. Build and start the app</h2>
+<p>In the terminal at the repository root:</p>
+<pre><code class="language-bash">bash scripts/start_codespaces.sh
+</code></pre>
+<p>This checks the secret and trusted index, validates Compose, builds both images,
+waits for backend/frontend health checks, and records HTTP/retrieval checks in
+<code>outputs/deployment_verification.json</code>. It does not print the API key.
+The first backend image build downloads and caches the embedding model; runtime
+uses that cached model in offline mode.</p>
+<p>Run the paid end-to-end answer check once:</p>
+<pre><code class="language-bash">python3 scripts/verify_deployment.py --include-generation
+</code></pre>
+<p>Success includes <code>checks_passed: true</code>, an actual answer/source payload, and a
+four-metric composite for an approved reference question. An HTTP 200 alone does
+not prove every generated answer is correct.</p>
+<p>If a check fails, inspect the services:</p>
+<pre><code class="language-bash">docker compose ps
+docker compose logs --tail=100 backend frontend
+</code></pre>
+<p>Missing secret: grant repository access to the Codespaces secret and stop/restart
+the Codespace. Credit error: check API billing. Model download/build error: inspect
+the backend build log and retry after network access is restored. No successful
+Docker build has been recorded in this local Mac environment; the supplied checks
+must be run in your Codespace before deployment can be called complete.</p>
+<h2>7. Verify the forwarded browser URLs</h2>
+<p>Open the <strong>Ports</strong> tab. Keep <strong>7860</strong> and <strong>8501</strong> <strong>Private</strong> for this internal POC.
+Open port <strong>8501</strong> in your signed-in browser and ask:</p>
+<blockquote>
+<p>What time can I check in at ASH-CHI Loop, and when do I need to be out?</p>
+</blockquote>
+<p>Select <strong>Answer + Relevant Chunks</strong> and confirm that the answer, quality scores,
+route and sources appear. Open port <strong>7860</strong> and verify its health JSON.
+Copy both actual forwarded URLs from the Ports panel; do not invent them.</p>
+<p>A private forwarded URL requires GitHub authentication. A 401/404 from a separate
+unauthenticated notebook/client may be a port-authentication issue, not an app failure.
+Do not make a paid, unauthenticated API public merely to bypass that check. If an
+assessor explicitly requires public access, agree on an appropriate access method
+before changing visibility. <a href="https://docs.github.com/en/codespaces/developing-in-a-codespace/forwarding-ports-in-your-codespace">GitHub forwarding instructions</a></p>
+<p>The verification script records <code>forwarded_browser_urls_verified: false</code> because
+it cannot assert that you opened the private URLs. Retain your browser evidence
+and share the actual URLs plus <code>outputs/deployment_verification.json</code> when complete.
+Do not include any credentials. The report can then record real external deployment
+evidence instead of only local checks.</p>
+<h2>8. Complete staff validation and stop unused services</h2>
+<p>Follow <code>LIVE_VALIDATION.md</code> for the separate staff-review step. Novel questions
+still route to manual lookup until an independent reference is approved.</p>
+<p>When finished testing:</p>
+<pre><code class="language-bash">docker compose down
+</code></pre>
+<p>Then open <a href="https://github.com/codespaces">your Codespaces page</a>, stop the Codespace,
+and delete it when no longer needed. Stopping the app containers does not stop
+Codespaces compute, and stopped Codespaces still retain storage.</p>
+<h2>What to return after these steps</h2>
+<ul>
+<li>Repository URL and actual forwarded frontend/backend URLs.</li>
+<li><code>outputs/deployment_verification.json</code> from the Codespace.</li>
+<li>A note that both private browser URLs and the UI were checked.</li>
+<li>The completed staff worksheet, when a policy owner has reviewed it.</li>
+</ul>
+<p>Until those are available, external deployment and human sign-off remain pending;
+the already measured 90% held-out benchmark coverage is unchanged.</p>
+<hr><h1>Broader live-policy validation</h1>
+<p>The original ten-question development and ten-question held-out benchmarks met
+all five targets. This is still a small POC sample. It does not establish that
+90% of future staff questions can be automatically answered.</p>
+<h2>Automated preparation completed</h2>
+<p>Eight additional analyst-authored scenarios cover early arrival, occupancy,
+privacy, charge/media escalation, pending holds, accessibility details, animal
+control and amenity availability. The same frozen retrieval/generation pipeline
+produces draft answers, source excerpts and the three reference-free judge scores.
+These are supplemental probes, not an independent hotel-staff benchmark.</p>
+<p>See <code>outputs/supplemental_live_results.json</code>,
+<code>outputs/supplemental_live_summary.json</code>, and <strong>outputs/staff_review.csv</strong>.
+Every probe should retain MANUAL LOOKUP, a null contextual-recall score and a null
+four-metric composite until an independent reference is available. A high score
+on the other three dimensions must not silently promote it to AUTO ANSWER.</p>
+<h2>Prerequisite: a human policy reviewer</h2>
+<p>Ask a hotel policy owner or experienced staff member to open <code>staff_review.csv</code>
+in Excel. The reviewer must check current source policies and the relevant live
+property profile, including conditions and exceptions. The system's generated
+draft is not ground truth. No rows are marked approved by the automated workflow.</p>
+<p>For each row, fill:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>review_status</code></td>
+<td><code>approved</code> only after checking the policy; otherwise <code>needs_changes</code> or <code>rejected</code></td>
+</tr>
+<tr>
+<td><code>reviewer</code></td>
+<td>Reviewer name or identifiable staff ID</td>
+</tr>
+<tr>
+<td><code>reviewed_date</code></td>
+<td>Date as YYYY-MM-DD</td>
+</tr>
+<tr>
+<td><code>expected_answer</code></td>
+<td>Independently verified answer, including necessary conditions and exclusions</td>
+</tr>
+<tr>
+<td><code>relevant_context</code></td>
+<td>Verified source passage(s) and document/section; separate multiple passages using <code>&lt;&gt;</code></td>
+</tr>
+<tr>
+<td><code>unsupported_claims</code></td>
+<td>Any unsupported detail in the generated draft</td>
+</tr>
+<tr>
+<td><code>missing_conditions</code></td>
+<td>Missing fees, exceptions, approval requirements or property details</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>Corrections or decisions, including whether manual escalation remains necessary</td>
+</tr>
+</tbody>
+</table>
+<p>Do not approve an unsupported question merely because the answer politely abstains.
+Verify whether the appropriate outcome is a supported answer, clarification request,
+or manual escalation. Keep the original question, draft, sources, case ID and
+<code>index_snapshot_sha256</code> intact for traceability.</p>
+<h2>Collect representative real staff questions</h2>
+<p>The eight prepared scenarios are only a starting point. Collect at least <strong>30–50
+additional de-identified staff questions</strong> as a proposed POC review batch, spanning
+properties, rate plans, fees, refunds, accessibility, conflicting information and
+unknown requests. This sample size is a practical next step, not a statistical
+guarantee of reliability. Do not include guest names, reservation IDs or payment
+details. Keep this review batch out of retrieval tuning while assessing it.</p>
+<p>Record whether each question was actually resolved without manual policy lookup,
+whether the sources support every material claim, and why staff intervened. Report
+coverage on the entire batch, including errors, abstentions and escalations. Do not
+count a safe abstention as a confidently resolved guest query. A policy owner must
+approve the acceptance decision; four LLM scores alone are insufficient sign-off.</p>
+<h2>Optional: promote fully approved reference questions</h2>
+<p>After staff approval, on the complete local project:</p>
+<pre><code class="language-bash">python3 scripts/approve_reviewed_references.py --reviewed-csv outputs/staff_review.csv
+</code></pre>
+<p>This command rejects missing reviewer/date/answer/context, stale index snapshots,
+and duplicate questions. It preserves the original catalog before adding any
+staff-approved judge-only references. The human approval fields are provenance,
+not cryptographic proof of review; run the command only after actual review.</p>
+<p>An exact approved question can then receive all four live scores. Its verified
+answer is supplied only to the judge, never to the generator or embedding index.
+Promotion does not establish broader paraphrase coverage. New wordings without an
+independent reference still route to manual lookup.</p>
+<p>Rebuild/redeploy the backend after a catalog update. Notebook cell 138 regenerates
+the baseline development catalog; rerunning it can replace the expanded catalog.
+Preserve reviewed files and re-review if the index/policies change. Do not rerun the
+benchmark notebook as part of a routine deployment-only rebuild.</p>
+<h2>Completion evidence</h2>
+<p>Return the reviewed worksheet, real staff-question outcomes, and policy-owner
+decision. Until then the report must say <strong>supplemental automation checks complete;
+human and representative live validation pending</strong>, rather than claiming 100%
+operational validation.</p>
+</main></body></html>

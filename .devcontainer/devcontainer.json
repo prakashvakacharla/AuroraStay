@@ -1,0 +1,17 @@
+{
+  "name": "AuroraStay policy POC",
+  "image": "mcr.microsoft.com/devcontainers/python:3-3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {}
+  },
+  "forwardPorts": [7860, 8501],
+  "portsAttributes": {
+    "7860": {"label": "AuroraStay API", "onAutoForward": "notify"},
+    "8501": {"label": "AuroraStay staff UI", "onAutoForward": "openBrowser"}
+  },
+  "hostRequirements": {"cpus": 4, "memory": "8gb", "storage": "20gb"},
+  "secrets": {
+    "OPENAI_API_KEY": {"description": "Funded API key; used by the generator and judge."},
+    "OPENAI_API_BASE": {"description": "OpenAI-compatible base URL, normally https://api.openai.com/v1."}
+  }
+}

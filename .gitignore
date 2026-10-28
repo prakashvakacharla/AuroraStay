@@ -1,0 +1,13 @@
+config.json
+.env
+.venv/
+.cache/
+.deepeval/
+__pycache__/
+.ipynb_checkpoints/
+Data/*
+!Data/README.md
+outputs/*
+!outputs/validation.json
+backend_files/faiss_index/
+*.executed.ipynb
