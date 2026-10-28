@@ -1,8 +1,14 @@
 # AuroraStay: browser-based Codespaces deployment
 
-The notebook benchmark and local API checks are complete. This guide completes
-the remaining account-dependent deployment steps. The deployment package is prepared;
-a GitHub repository, Codespace and external URL have not been created for you.
+The notebook benchmark, local API checks, and GitHub upload are complete.
+The deployment files are available at https://github.com/prakashvakacharla/AuroraStay.
+For this repository, skip steps 1 and 4 and the ZIP download prerequisite below.
+Add Codespaces secrets with access to AuroraStay, create a new Codespace, then
+continue at step 6; its initial creation applies the included dev container.
+Step 5 is needed only if you already created a Codespace before these files arrived.
+The repository currently has public visibility; the API key is excluded.
+A Codespace, verified external URLs, and staff sign-off remain pending.
+The remaining instructions also describe the alternative ZIP setup for a new repository.
 
 ## Prerequisites you handle
 
