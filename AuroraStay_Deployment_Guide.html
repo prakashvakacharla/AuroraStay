@@ -1,7 +1,27 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AuroraStay deployment and prerequisites</title><style>body{font:16px/1.6 system-ui,sans-serif;color:#172c45;background:#f4f7fa;margin:0}main{max-width:1000px;margin:32px auto;background:white;padding:40px;border:1px solid #d6dee8;border-radius:12px}h1,h2,h3{line-height:1.25}h2{margin-top:36px}a{color:#155c98}pre{background:#edf2f7;padding:18px;overflow:auto;border-radius:6px}code{font-size:14px}table{border-collapse:collapse;width:100%}th,td{padding:12px;border:1px solid #d6dee8;text-align:left}blockquote{border-left:4px solid #155c98;margin-left:0;padding-left:18px}.status{background:#edf2f7;padding:20px;border-radius:8px}@media(max-width:700px){main{margin:12px;padding:20px}table{display:block;overflow:auto}}</style></head><body><main><div class="status"><strong>GitHub upload complete; Codespaces deployment and staff sign-off remain.</strong><p>Use <a href="https://github.com/prakashvakacharla/AuroraStay">prakashvakacharla/AuroraStay</a>. Skip repository creation, ZIP download, and upload steps below. Add Codespaces secrets for AuroraStay, create a new Codespace, then run the startup and verification commands in step 6. A new Codespace applies the included container configuration automatically. The repository is currently public; no API key is included. See DEPLOYMENT_GUIDE.md for the updated status.</p></div><h1>AuroraStay: browser-based Codespaces deployment</h1>
-<p>The notebook benchmark and local API checks are complete. This guide completes
-the remaining account-dependent deployment steps. The deployment package is prepared;
-a GitHub repository, Codespace and external URL have not been created for you.</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AuroraStay deployment and prerequisites</title><style>body{font:16px/1.6 system-ui,sans-serif;color:#172c45;background:#f4f7fa;margin:0}main{max-width:1000px;margin:32px auto;background:white;padding:40px;border:1px solid #d6dee8;border-radius:12px}h1,h2,h3{line-height:1.25}h2{margin-top:36px}a{color:#155c98}pre{background:#edf2f7;padding:18px;overflow:auto;border-radius:6px}code{font-size:14px}table{border-collapse:collapse;width:100%}th,td{padding:12px;border:1px solid #d6dee8;text-align:left}blockquote{border-left:4px solid #155c98;margin-left:0;padding-left:18px}.status{background:#edf2f7;padding:20px;border-radius:8px}@media(max-width:700px){main{margin:12px;padding:20px}table{display:block;overflow:auto}}</style></head><body><main><h1>Current completion status — 2026-10-29</h1>
+<p>Repository upload is complete: https://github.com/prakashvakacharla/AuroraStay.
+User-supplied Codespaces verification passes backend health (189 vectors),
+frontend health, retrieval (3 chunks), and answer generation (HTTP 200).
+The deployed approved-reference answer has composite <strong>95.77% / AUTO ANSWER</strong>.
+A separate browser run passed all four quality thresholds at <strong>95.56%</strong>.
+These are user-supplied remote observations, not an independent remote rerun.</p>
+<p>Frontend: https://shady-sorcery-967q4vq4xwgj3p9x5-8501.app.github.dev/
+Backend: https://shady-sorcery-967q4vq4xwgj3p9x5-7860.app.github.dev/</p>
+<p>The complete answer, three supporting excerpts and judge reasons are archived in
+<code>outputs/codespaces_deployment_verification.json</code> in the full submission package.
+The actual URLs were supplied by the user. Private URLs require authorized access
+and a running Codespace. A live availability check is not implied by these links.</p>
+<p>All five aggregate benchmark targets pass. Auto-answer coverage is 9/10 test
+questions; 7/10 pass every individual metric. Novel questions still require manual
+lookup without an independent recall reference. Human review of eight prepared
+cases and a larger real-staff batch are rollout recommendations, not additional
+notebook marks. Source-expander display confirmation remains outstanding.</p>
+<p>The guide below is retained as a reproducible setup procedure. Existing users can
+skip repository creation and upload. Do not rebuild or repeat paid evaluations
+solely to generate the final report.</p>
+<hr />
+<h1>AuroraStay: browser-based Codespaces deployment</h1>
+<p>The following is the original setup procedure; current completion evidence is above.</p>
 <h2>Prerequisites you handle</h2>
 <ol>
 <li>A GitHub personal account with permission to create a private repository and use
@@ -27,18 +47,18 @@ Under <strong>Codespaces secrets</strong>, choose <strong>New secret</strong> an
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Value</th>
+  <th>Name</th>
+  <th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>OPENAI_API_KEY</code></td>
-<td>Your funded API key</td>
+  <td><code>OPENAI_API_KEY</code></td>
+  <td>Your funded API key</td>
 </tr>
 <tr>
-<td><code>OPENAI_API_BASE</code></td>
-<td><code>https://api.openai.com/v1</code></td>
+  <td><code>OPENAI_API_BASE</code></td>
+  <td><code>https://api.openai.com/v1</code></td>
 </tr>
 </tbody>
 </table>
@@ -100,9 +120,8 @@ docker compose logs --tail=100 backend frontend
 </code></pre>
 <p>Missing secret: grant repository access to the Codespaces secret and stop/restart
 the Codespace. Credit error: check API billing. Model download/build error: inspect
-the backend build log and retry after network access is restored. No successful
-Docker build has been recorded in this local Mac environment; the supplied checks
-must be run in your Codespace before deployment can be called complete.</p>
+the backend build log and retry after network access is restored. The Mac did not run Docker; subsequent user-supplied Codespaces verification
+passed. Use these checks when redeploying.</p>
 <h2>7. Verify the forwarded browser URLs</h2>
 <p>Open the <strong>Ports</strong> tab. Keep <strong>7860</strong> and <strong>8501</strong> <strong>Private</strong> for this internal POC.
 Open port <strong>8501</strong> in your signed-in browser and ask:</p>
@@ -138,106 +157,6 @@ Codespaces compute, and stopped Codespaces still retain storage.</p>
 <li>A note that both private browser URLs and the UI were checked.</li>
 <li>The completed staff worksheet, when a policy owner has reviewed it.</li>
 </ul>
-<p>Until those are available, external deployment and human sign-off remain pending;
-the already measured 90% held-out benchmark coverage is unchanged.</p>
-<hr><h1>Broader live-policy validation</h1>
-<p>The original ten-question development and ten-question held-out benchmarks met
-all five targets. This is still a small POC sample. It does not establish that
-90% of future staff questions can be automatically answered.</p>
-<h2>Automated preparation completed</h2>
-<p>Eight additional analyst-authored scenarios cover early arrival, occupancy,
-privacy, charge/media escalation, pending holds, accessibility details, animal
-control and amenity availability. The same frozen retrieval/generation pipeline
-produces draft answers, source excerpts and the three reference-free judge scores.
-These are supplemental probes, not an independent hotel-staff benchmark.</p>
-<p>See <code>outputs/supplemental_live_results.json</code>,
-<code>outputs/supplemental_live_summary.json</code>, and <strong>outputs/staff_review.csv</strong>.
-Every probe should retain MANUAL LOOKUP, a null contextual-recall score and a null
-four-metric composite until an independent reference is available. A high score
-on the other three dimensions must not silently promote it to AUTO ANSWER.</p>
-<h2>Prerequisite: a human policy reviewer</h2>
-<p>Ask a hotel policy owner or experienced staff member to open <code>staff_review.csv</code>
-in Excel. The reviewer must check current source policies and the relevant live
-property profile, including conditions and exceptions. The system's generated
-draft is not ground truth. No rows are marked approved by the automated workflow.</p>
-<p>For each row, fill:</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Required action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>review_status</code></td>
-<td><code>approved</code> only after checking the policy; otherwise <code>needs_changes</code> or <code>rejected</code></td>
-</tr>
-<tr>
-<td><code>reviewer</code></td>
-<td>Reviewer name or identifiable staff ID</td>
-</tr>
-<tr>
-<td><code>reviewed_date</code></td>
-<td>Date as YYYY-MM-DD</td>
-</tr>
-<tr>
-<td><code>expected_answer</code></td>
-<td>Independently verified answer, including necessary conditions and exclusions</td>
-</tr>
-<tr>
-<td><code>relevant_context</code></td>
-<td>Verified source passage(s) and document/section; separate multiple passages using <code>&lt;&gt;</code></td>
-</tr>
-<tr>
-<td><code>unsupported_claims</code></td>
-<td>Any unsupported detail in the generated draft</td>
-</tr>
-<tr>
-<td><code>missing_conditions</code></td>
-<td>Missing fees, exceptions, approval requirements or property details</td>
-</tr>
-<tr>
-<td><code>notes</code></td>
-<td>Corrections or decisions, including whether manual escalation remains necessary</td>
-</tr>
-</tbody>
-</table>
-<p>Do not approve an unsupported question merely because the answer politely abstains.
-Verify whether the appropriate outcome is a supported answer, clarification request,
-or manual escalation. Keep the original question, draft, sources, case ID and
-<code>index_snapshot_sha256</code> intact for traceability.</p>
-<h2>Collect representative real staff questions</h2>
-<p>The eight prepared scenarios are only a starting point. Collect at least <strong>30–50
-additional de-identified staff questions</strong> as a proposed POC review batch, spanning
-properties, rate plans, fees, refunds, accessibility, conflicting information and
-unknown requests. This sample size is a practical next step, not a statistical
-guarantee of reliability. Do not include guest names, reservation IDs or payment
-details. Keep this review batch out of retrieval tuning while assessing it.</p>
-<p>Record whether each question was actually resolved without manual policy lookup,
-whether the sources support every material claim, and why staff intervened. Report
-coverage on the entire batch, including errors, abstentions and escalations. Do not
-count a safe abstention as a confidently resolved guest query. A policy owner must
-approve the acceptance decision; four LLM scores alone are insufficient sign-off.</p>
-<h2>Optional: promote fully approved reference questions</h2>
-<p>After staff approval, on the complete local project:</p>
-<pre><code class="language-bash">python3 scripts/approve_reviewed_references.py --reviewed-csv outputs/staff_review.csv
-</code></pre>
-<p>This command rejects missing reviewer/date/answer/context, stale index snapshots,
-and duplicate questions. It preserves the original catalog before adding any
-staff-approved judge-only references. The human approval fields are provenance,
-not cryptographic proof of review; run the command only after actual review.</p>
-<p>An exact approved question can then receive all four live scores. Its verified
-answer is supplied only to the judge, never to the generator or embedding index.
-Promotion does not establish broader paraphrase coverage. New wordings without an
-independent reference still route to manual lookup.</p>
-<p>Rebuild/redeploy the backend after a catalog update. Notebook cell 138 regenerates
-the baseline development catalog; rerunning it can replace the expanded catalog.
-Preserve reviewed files and re-review if the index/policies change. Do not rerun the
-benchmark notebook as part of a routine deployment-only rebuild.</p>
-<h2>Completion evidence</h2>
-<p>Return the reviewed worksheet, real staff-question outcomes, and policy-owner
-decision. Until then the report must say <strong>supplemental automation checks complete;
-human and representative live validation pending</strong>, rather than claiming 100%
-operational validation.</p>
+<p>Deployment output and URLs have now been supplied; human sign-off and
+source-expander confirmation remain pending. The 90% benchmark coverage is unchanged.</p>
 </main></body></html>

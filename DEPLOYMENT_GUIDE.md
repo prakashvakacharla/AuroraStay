@@ -1,14 +1,35 @@
+# Current completion status — 2026-10-29
+
+Repository upload is complete: https://github.com/prakashvakacharla/AuroraStay.
+User-supplied Codespaces verification passes backend health (189 vectors),
+frontend health, retrieval (3 chunks), and answer generation (HTTP 200).
+The deployed approved-reference answer has composite **95.77% / AUTO ANSWER**.
+A separate browser run passed all four quality thresholds at **95.56%**.
+These are user-supplied remote observations, not an independent remote rerun.
+
+Frontend: https://shady-sorcery-967q4vq4xwgj3p9x5-8501.app.github.dev/
+Backend: https://shady-sorcery-967q4vq4xwgj3p9x5-7860.app.github.dev/
+
+The complete answer, three supporting excerpts and judge reasons are archived in
+`outputs/codespaces_deployment_verification.json` in the full submission package.
+The actual URLs were supplied by the user. Private URLs require authorized access
+and a running Codespace. A live availability check is not implied by these links.
+
+All five aggregate benchmark targets pass. Auto-answer coverage is 9/10 test
+questions; 7/10 pass every individual metric. Novel questions still require manual
+lookup without an independent recall reference. Human review of eight prepared
+cases and a larger real-staff batch are rollout recommendations, not additional
+notebook marks. Source-expander display confirmation remains outstanding.
+
+The guide below is retained as a reproducible setup procedure. Existing users can
+skip repository creation and upload. Do not rebuild or repeat paid evaluations
+solely to generate the final report.
+
+---
+
 # AuroraStay: browser-based Codespaces deployment
 
-The notebook benchmark, local API checks, and GitHub upload are complete.
-The deployment files are available at https://github.com/prakashvakacharla/AuroraStay.
-For this repository, skip steps 1 and 4 and the ZIP download prerequisite below.
-Add Codespaces secrets with access to AuroraStay, create a new Codespace, then
-continue at step 6; its initial creation applies the included dev container.
-Step 5 is needed only if you already created a Codespace before these files arrived.
-The repository currently has public visibility; the API key is excluded.
-A Codespace, verified external URLs, and staff sign-off remain pending.
-The remaining instructions also describe the alternative ZIP setup for a new repository.
+The following is the original setup procedure; current completion evidence is above.
 
 ## Prerequisites you handle
 
@@ -127,9 +148,8 @@ docker compose logs --tail=100 backend frontend
 
 Missing secret: grant repository access to the Codespaces secret and stop/restart
 the Codespace. Credit error: check API billing. Model download/build error: inspect
-the backend build log and retry after network access is restored. No successful
-Docker build has been recorded in this local Mac environment; the supplied checks
-must be run in your Codespace before deployment can be called complete.
+the backend build log and retry after network access is restored. The Mac did not run Docker; subsequent user-supplied Codespaces verification
+passed. Use these checks when redeploying.
 
 ## 7. Verify the forwarded browser URLs
 
@@ -176,5 +196,5 @@ Codespaces compute, and stopped Codespaces still retain storage.
 - A note that both private browser URLs and the UI were checked.
 - The completed staff worksheet, when a policy owner has reviewed it.
 
-Until those are available, external deployment and human sign-off remain pending;
-the already measured 90% held-out benchmark coverage is unchanged.
+Deployment output and URLs have now been supplied; human sign-off and
+source-expander confirmation remain pending. The 90% benchmark coverage is unchanged.

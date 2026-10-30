@@ -24,5 +24,8 @@ This small benchmark is not a claim of 90% open-ended live coverage.
 Approved reference questions receive four-metric scoring; novel questions still
 require manual lookup when an independent recall reference is absent.
 
-Local UI, HTTP, generation and scoring checks passed. External deployment and
-staff sign-off must be recorded separately; see [LIVE_VALIDATION.md](LIVE_VALIDATION.md).
+Local UI, HTTP, generation and scoring checks passed. The user subsequently
+supplied passing Codespaces health, retrieval and answer verification (95.77%
+composite), plus browser scores (95.56%). See [COMPLETION_STATUS.md](COMPLETION_STATUS.md)
+for actual URLs, evidence provenance and remaining review. Staff sign-off and
+browser source-expander confirmation remain pending; see [LIVE_VALIDATION.md](LIVE_VALIDATION.md).
